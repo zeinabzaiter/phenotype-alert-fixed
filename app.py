@@ -7,6 +7,7 @@ import altair as alt
 def load_data():
     url = "https://raw.githubusercontent.com/zeinabzaiter/phenotype-alert-fixed/main/weekly_staph_phenotypes.csv"
     df = pd.read_csv(url)
+    df['Week'] = pd.to_datetime(df['Week'])  # Conversion de la colonne Week en datetime
     return df
 
 # Charger les données
@@ -35,7 +36,7 @@ df['Alerte'] = df[phenotype_choisi] > seuil
 base = alt.Chart(df).encode(
     x=alt.X('Week:T', title='Week'),
     y=alt.Y(f'{phenotype_choisi}:Q', title='Number of isolates'),
-    tooltip=['Week', phenotype_choisi, 'Alerte']
+    tooltip=['Week:T', phenotype_choisi, 'Alerte']
 )
 
 line = base.mark_line(color='blue')
