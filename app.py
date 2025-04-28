@@ -36,7 +36,11 @@ df['Alerte'] = df[phenotype_choisi] > seuil
 base = alt.Chart(df).encode(
     x=alt.X('Week:T', title='Week'),
     y=alt.Y(f'{phenotype_choisi}:Q', title='Number of isolates'),
-    tooltip=['Week:T', phenotype_choisi, 'Alerte']
+    tooltip=[
+        alt.Tooltip('Week:T', title='Week'),
+        alt.Tooltip(f'{phenotype_choisi}:Q', title='Resistance %'),
+        alt.Tooltip('Alerte:N', title='Alert')
+    ]
 )
 
 line = base.mark_line(color='blue')
@@ -54,4 +58,6 @@ graphique = (line + points).properties(
     height=400
 ).interactive()
 
+# Affichage du graphique
+st.title("Phenotypic Resistance Alert Dashboard")
 st.altair_chart(graphique, use_container_width=True)
